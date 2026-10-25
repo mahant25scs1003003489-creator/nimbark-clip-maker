@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#8d2f14">
+  <title>Nimbark Clip Maker</title>
+  <style>
+    :root { --saffron:#a6401d; --deep:#70220f; --gold:#d7a63c; --cream:#fff8e9; --ink:#482b20; }
+    * { box-sizing:border-box; }
+    body { margin:0; color:var(--ink); font-family: Georgia, 'Times New Roman', serif; background:radial-gradient(circle at top, #fffdf5 0, #fff2d5 55%, #f8dfb1 100%); }
+    .topline { height:7px; background:linear-gradient(90deg,#8e2614,#f4cf65,#8e2614); }
+    .page { width:min(920px, 100%); margin:0 auto; padding:24px 18px 42px; }
+    .brand { text-align:center; }
+    .logo { display:block; width:clamp(155px, 30vw, 230px); aspect-ratio:1/1; object-fit:contain; margin:0 auto 10px; border-radius:18px; }
+    h1 { margin:8px 0 7px; color:var(--deep); font-size:clamp(2rem, 6vw, 3.45rem); line-height:1.08; letter-spacing:1.5px; text-shadow:0 2px 0 #f5d994; }
+    .tagline { margin:0 auto 20px; color:#89512d; font-size:clamp(1rem, 2.5vw, 1.2rem); }
+    .ornament { color:#c18a25; letter-spacing:8px; margin:12px 0 20px; }
+    .photo-card { max-width:690px; margin:0 auto 28px; padding:9px; background:linear-gradient(135deg,#e6bf5a,#fff1c7,#b77b23); border-radius:20px; box-shadow:0 12px 30px #7d3b1b22; }
+    .photo-card img { display:block; width:100%; height:auto; max-height:440px; object-fit:cover; object-position:center 35%; border-radius:13px; }
+    .photo-caption { text-align:center; color:#87401c; font-size:1rem; font-style:italic; margin:12px 0 0; }
+    .tool-card { max-width:690px; margin:0 auto; padding:clamp(20px, 5vw, 34px); background:#fffdf7; border:1px solid #e8c875; border-radius:22px; box-shadow:0 15px 38px #78331b18; }
+    .tool-card h2 { text-align:center; margin:0 0 8px; color:var(--deep); font-size:clamp(1.45rem,4vw,2rem); }
+    .intro { text-align:center; color:#8a654b; margin:0 0 24px; font-family:Arial,sans-serif; line-height:1.5; }
+    label { display:block; font-weight:bold; margin:16px 0 7px; color:#6e301b; }
+    input, select { width:100%; min-height:48px; border:1px solid #dfc9a3; border-radius:11px; padding:12px 13px; background:#fff; color:#40271c; font-size:16px; outline:none; }
+    input:focus, select:focus { border-color:#b56a26; box-shadow:0 0 0 3px #e8c87555; }
+    .times { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    button { display:block; width:100%; min-height:52px; margin-top:24px; border:0; border-radius:12px; background:linear-gradient(135deg,#a53d18,#7b210f); color:#fff8e8; font-size:1.05rem; font-weight:bold; letter-spacing:.3px; cursor:pointer; box-shadow:0 6px 15px #7c2c1833; }
+    button:hover { filter:brightness(1.08); }
+    .hint { margin:8px 0 0; color:#927761; font: .88rem Arial,sans-serif; }
+    .message { margin-top:18px; padding:12px 14px; border-radius:10px; background:#fff0d9; color:#792b17; overflow-wrap:anywhere; font-family:Arial,sans-serif; }
+    footer { text-align:center; margin:25px 0 0; color:#936c4d; font-size:.95rem; }
+    @media (max-width:520px) { .page{padding:15px 12px 30px;} .times{grid-template-columns:1fr; gap:0;} .photo-card img{max-height:330px;} .tool-card{border-radius:17px;} }
+  </style>
+</head>
+<body>
+  <div class="topline"></div>
+  <main class="page">
+    <header class="brand">
+      <img class="logo" src="{{ url_for('static', filename='nimbark-logo.png') }}" alt="Nimbark Sampraday logo">
+      <div class="ornament">✦ ❀ ✦</div>
+      <h1>NIMBARK<br>CLIP MAKER</h1>
+      <p class="tagline">Create Divine Moments, Share Devotional Bliss</p>
+    </header>
+
+    <section class="photo-card" aria-label="Devotional photograph">
+      <img src="{{ url_for('static', filename='maharaj-photo.png') }}" alt="Maharaj Ji giving a devotional discourse">
+      <p class="photo-caption">JAGADGURU NIMBARKACHARYA SHREE JI</p>
+    </section>
+
+    <section class="tool-card">
+      <h2>🪷 Create Your Devotional Clip</h2>
+      <p class="intro">Paste the YouTube video link, select the time, and create your clip..</p>
+      <form method="POST" action="/">
+        <label for="video_url">YouTube Video Link</label>
+        <input id="video_url" type="url" name="video_url" placeholder="https://www.youtube.com/watch?v=..." required>
+
+        <div class="times">
+          <div>
+            <label for="start_time">Start Time (HH:MM:SS)</label>
+            <input id="start_time" type="text" name="start_time" placeholder="00:02:15" pattern="[0-9]{1,2}:[0-5][0-9]:[0-5][0-9]" title="HH:MM:SS format use karein" required>
+          </div>
+          <div>
+            <label for="end_time">End Time (HH:MM:SS)</label>
+            <input id="end_time" type="text" name="end_time" placeholder="00:03:30" pattern="[0-9]{1,2}:[0-5][0-9]:[0-5][0-9]" title="HH:MM:SS format use karein" required>
+          </div>
+        </div>
+
+        <label for="quality">Video Quality</label>
+        <select id="quality" name="quality" required>
+          <option value="360">360p — Data saving</option>
+          <option value="480">480p — Standard</option>
+          <option value="720" selected>720p — HD</option>
+          <option value="1080">1080p — Full HD</option>
+        </select>
+        <p class="hint">Example: Start 00:02:15 aur End 00:03:30 — 1 minute 15 second ki clip.</p>
+        <button type="submit">✂ Create Devotional Clip</button>
+      </form>
+      {% if message %}<div class="message" role="alert">{{ message }}</div>{% endif %}
+    </section>
+    <footer>RADHE RADHE</footer>
+  </main>
+</body>
+</html>
